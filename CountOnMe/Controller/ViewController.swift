@@ -9,40 +9,41 @@
 import UIKit
 
 class ViewController: UIViewController {
+    // MARK: Public
+    // MARK: Outlets
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
-    let calculator = Calculator()
-    
-    // View Life cycles
+
+    // MARK: Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorCannotAddOperator), name: Notification.Name(rawValue: "CannotAddOperator"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorCannotAddOperator), name:  Notification.ErrorName.cannotAddOperator.notificationName, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionNotValid), name: Notification.Name(rawValue: "ExpressionIsNotValid"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionNotValid), name: Notification.ErrorName.expressionNotValid.notificationName, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionNotLongEnough), name: Notification.Name(rawValue: "ExpressionIsNotLongEnough"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionTooSmall), name: Notification.ErrorName.expressionTooSmall.notificationName, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionDividedByZero), name: Notification.ErrorName.dividedByZero.notificationName, object: nil)
     }
     
     @objc func displayErrorCannotAddOperator() {
-        let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        self.present(alertVC, animated: true, completion: nil)
+        self.displayError(.cannotAddOperator)
     }
     
     @objc func displayErrorExpressionNotValid() {
-        let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return self.present(alertVC, animated: true, completion: nil)
+        return self.displayError(.expressionNotValid)
     }
     
-    @objc func displayErrorExpressionNotLongEnough() {
-        let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return self.present(alertVC, animated: true, completion: nil)
+    @objc func displayErrorExpressionTooSmall() {
+        return self.displayError(.expressionTooSmall)
     }
     
-    // View actions
+    @objc func displayErrorExpressionDividedByZero() {
+        return self.displayError(.dividedByZero)
+    }
+    
+    // MARK: Actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
@@ -82,8 +83,21 @@ class ViewController: UIViewController {
         displayExpression()
     }
     
+    // MARK: Private
+    // MARK: Properties
+    private let calculator = Calculator()
+    
+    // MARK: Methods
+    ///  Show the expression on the screen
     private func displayExpression() {
         textView.text = calculator.getExpression
+    }
+    
+    /// Show an alert view controller with a specific error
+    private func displayError(_ error: Notification.ErrorName) {
+        let alertVC = UIAlertController(title: "Zéro!", message: error.notificationMessage, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        return present(alertVC, animated: true, completion: nil)
     }
 }
 

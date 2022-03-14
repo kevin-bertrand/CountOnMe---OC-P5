@@ -87,7 +87,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenAddingDivision_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.cannotAddOperator.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
         
@@ -101,7 +101,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenTryingToCalculate_ThenGetToSmallError() {
         // Prepare expectations
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.tooSmall.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.expressionTooSmall.notificationName, object: calculator, handler: nil)
         
         // Given
         
@@ -152,7 +152,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithNumberAndHasLessThanThreeParts_WhenCalculate_ThenGetTooSmallError() {
         // Prepare expectations
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.tooSmall.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.expressionTooSmall.notificationName, object: calculator, handler: nil)
         
         // Given
         calculator.addNumber("4")
@@ -219,7 +219,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenADivisionByZero_WhenCalculare_ThenGetResult() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.dividedByZero.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.dividedByZero.notificationName, object: calculator, handler: nil)
         
         // Given
         calculator.addNumber("5")
@@ -273,7 +273,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithOperator_WhenAddingOperator_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.cannotAddOperator.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
         calculator.addOperator(.minus)
@@ -288,7 +288,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithOperator_WhenCalculate_ThenGetExpressionNotValidError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.notValid.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
         calculator.addNumber("3")
@@ -340,7 +340,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionHasResult_WhenRecalculate_ThenGetExpressionIsNotValidError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.notValid.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
         calculator.addNumber("3")

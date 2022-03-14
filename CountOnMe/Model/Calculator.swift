@@ -18,12 +18,12 @@ class Calculator {
     // MARK: Methods
     func calculateExpression() {
         guard lastElementsIsANumber else {
-            sendNotification(for: .notValid)
+            sendNotification(for: .expressionNotValid)
             return
         }
         
         guard expressionHaveEnoughElement else {
-            sendNotification(for: .tooSmall)
+            sendNotification(for: .expressionTooSmall)
             return
         }
         
@@ -43,7 +43,7 @@ class Calculator {
             case "-":
                 result = left - right
             default:
-                sendNotification(for: .notValid)
+                sendNotification(for: .expressionNotValid)
                 return
             }
             
@@ -101,7 +101,7 @@ class Calculator {
     
     // MARK: Methods
     private func sendNotification(for errorName: Notification.ErrorName) {
-        let notificationName = Notification.Name(rawValue: errorName.rawValue)
+        let notificationName = errorName.notificationName 
         let notification = Notification(name: notificationName, object: self)
         NotificationCenter.default.post(notification)
     }
@@ -109,9 +109,17 @@ class Calculator {
 
 extension Notification {
     enum ErrorName: String {
-        case notValid = "ExpressionIsNotValid"
-        case cannotAddOperator = "CannotAddOperator"
-        case tooSmall = "ExpressionIsNotLongEnough"
-        case dividedByZero = "ExpressionIsDividedByZero"
+        case expressionNotValid = "Entrez une expression correcte !"
+        case cannotAddOperator = "Un operateur est déja mis !"
+        case expressionTooSmall = "Démarrez un nouveau calcul !"
+        case dividedByZero = "Une division par 0 ne peut pas être effectuée !"
+        
+        var notificationName: Notification.Name {
+            return Notification.Name(rawValue: "\(self)")
+        }
+        
+        var notificationMessage: String {
+            return self.rawValue
+        }
     }
 }
