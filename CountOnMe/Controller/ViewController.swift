@@ -42,10 +42,6 @@ class ViewController: UIViewController {
         return self.present(alertVC, animated: true, completion: nil)
     }
     
-    @objc func showExpression() {
-        textView.text = calculator.getExpression
-    }
-    
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
@@ -66,6 +62,21 @@ class ViewController: UIViewController {
         displayExpression()
     }
 
+    @IBAction func tappedMultiplyButton(_ sender: UIButton) {
+        calculator.addOperator(.multiply)
+        displayExpression()
+    }
+    
+    @IBAction func tappedDividedButton(_ sender: UIButton) {
+        calculator.addOperator(.division)
+        displayExpression()
+    }
+    
+    @IBAction func tappedClearButton(_ sender: UIButton) {
+        calculator.clearExpression()
+        displayExpression()
+    }
+    
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         calculator.calculateExpression()
         displayExpression()
