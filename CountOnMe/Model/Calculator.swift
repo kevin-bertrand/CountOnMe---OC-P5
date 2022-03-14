@@ -18,16 +18,12 @@ class Calculator {
     // MARK: Methods
     func calculateExpression() {
         guard lastElementsIsANumber else {
-            let notificationName = Notification.Name(rawValue: "ExpressionIsNotValid")
-            let notification = Notification(name: notificationName)
-            NotificationCenter.default.post(notification)
+            sendNotification(for: .notValid)
             return
         }
         
         guard expressionHaveEnoughElement else {
-            let notificationName = Notification.Name(rawValue: "ExpressionIsNotLongEnough")
-            let notification = Notification(name: notificationName)
-            NotificationCenter.default.post(notification)
+            sendNotification(for: .tooSmall)
             return
         }
         
@@ -42,9 +38,13 @@ class Calculator {
             
             let result: Int
             switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            default: fatalError("Unknown operator !")
+            case "+":
+                result = left + right
+            case "-":
+                result = left - right
+            default:
+                sendNotification(for: .notValid)
+                return
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
@@ -55,23 +55,28 @@ class Calculator {
     }
     
     func addOperator(_ operation: Operation) {
+        if expressionHaveResult {
+            clearExpression()
+        }
+        
         if lastElementsIsANumber {
             expression.append(operation.rawValue)
         } else {
-            let notificationName = Notification.Name(rawValue: "CannotAddOperator")
-            let notification = Notification(name: notificationName)
-            NotificationCenter.default.post(notification)
+            sendNotification(for: .cannotAddOperator)
         }
     }
     
     func addNumber(_ number: String) {
         if expressionHaveResult {
-            resetExpression()
+            clearExpression()
         }
         
         expression.append(number)
     }
     
+    func clearExpression() {
+        expression = ""
+    }
     
     // MARK: PRIVATE
     // MARK: Properties
@@ -95,7 +100,18 @@ class Calculator {
     }
     
     // MARK: Methods
-    private func resetExpression() {
-        expression = ""
+    private func sendNotification(for errorName: Notification.ErrorName) {
+        let notificationName = Notification.Name(rawValue: errorName.rawValue)
+        let notification = Notification(name: notificationName, object: self)
+        NotificationCenter.default.post(notification)
+    }
+}
+
+extension Notification {
+    enum ErrorName: String {
+        case notValid = "ExpressionIsNotValid"
+        case cannotAddOperator = "CannotAddOperator"
+        case tooSmall = "ExpressionIsNotLongEnough"
+        case dividedByZero = "ExpressionIsDividedByZero"
     }
 }
