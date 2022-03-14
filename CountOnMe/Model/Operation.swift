@@ -8,9 +8,9 @@
 
 import Foundation
 
-enum Operation: String {
-    case plus = " + "
-    case minus = " - "
+enum Operation: String, CaseIterable {
     case multiply = " * "
     case division = " / "
+    case plus = " + "
+    case minus = " - "
 }

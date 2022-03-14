@@ -236,6 +236,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenComplexeExpression_WhenCalculate_ThenGetResultAccordingToCalculationRules() {
         // Given
+        calculator.addOperator(.minus)
         calculator.addNumber("5")
         calculator.addOperator(.plus)
         calculator.addNumber("10")
@@ -250,7 +251,7 @@ class CountOnMeTests: XCTestCase {
         calculator.calculateExpression()
         
         // Then
-        XCTAssertEqual(calculator.getExpression, "5 + 10 / 2 - 4 * 20 = -70")
+        XCTAssertEqual(calculator.getExpression, " - 5 + 10 / 2 - 4 * 20 = -80")
     }
     
     // MARK: When the expression end with an operator

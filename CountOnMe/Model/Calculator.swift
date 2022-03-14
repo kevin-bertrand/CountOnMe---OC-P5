@@ -27,30 +27,24 @@ class Calculator {
             return
         }
         
+        guard expressionHaveResult == false else {
+            sendNotification(for: .expressionNotValid)
+            return
+        }
+        
         // Create local copy of operations
         var operationsToReduce = elements
         
-        // Iterate over operations while an operand still here
-        while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
-            
-            let result: Int
-            switch operand {
-            case "+":
-                result = left + right
-            case "-":
-                result = left - right
-            default:
-                sendNotification(for: .expressionNotValid)
-                return
-            }
-            
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
+        if operationsToReduce.first == "-" {
+            operationsToReduce = Array(operationsToReduce.dropFirst())
+            operationsToReduce[0] = "\(-Double(operationsToReduce[0])!)"
         }
         
+        for operand in Operation.allCases {
+            guard let calculationResult = performCalculationForOperation(operand, in: operationsToReduce) else { return }
+            operationsToReduce = calculationResult
+        }
+
         expression.append(" = \(operationsToReduce.first!)")
     }
     
@@ -59,7 +53,7 @@ class Calculator {
             clearExpression()
         }
         
-        if lastElementsIsANumber {
+        if lastElementsIsANumber || (operation == .minus && elements.count == 0) {
             expression.append(operation.rawValue)
         } else {
             sendNotification(for: .cannotAddOperator)
@@ -88,7 +82,7 @@ class Calculator {
     }
     
     private var lastElementsIsANumber: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "/" && elements.last != "*"
+        return Int(elements.last ?? "") != nil
     }
     
     private var expressionHaveResult: Bool {
@@ -101,16 +95,53 @@ class Calculator {
     
     // MARK: Methods
     private func sendNotification(for errorName: Notification.ErrorName) {
-        let notificationName = errorName.notificationName 
+        let notificationName = errorName.notificationName
         let notification = Notification(name: notificationName, object: self)
         NotificationCenter.default.post(notification)
+    }
+    
+    private func performCalculationForOperation(_ operand: Operation, in expressionToCalculate: [String]) -> [String]? {
+        let operandCharacter = operand.rawValue.trimmingCharacters(in: .whitespaces)
+        var operationsToReduce = expressionToCalculate
+        
+        while operationsToReduce.contains(operandCharacter) {
+            let firstIndexOfOperand = operationsToReduce.firstIndex(of: operandCharacter)!
+            let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1])!
+            let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1])!
+            
+            let result: Double
+            switch operand {
+            case .plus:
+                result = leftNumber + rightNumber
+            case .minus:
+                result = leftNumber - rightNumber
+            case .multiply:
+                result = leftNumber * rightNumber
+            case .division:
+                if rightNumber == 0 {
+                    sendNotification(for: .dividedByZero)
+                    return nil
+                } else {
+                    result = leftNumber / rightNumber
+                }
+            }
+            
+            for indexToRemove in (firstIndexOfOperand-1...firstIndexOfOperand+1).reversed() {
+                operationsToReduce.remove(at: indexToRemove)
+            }
+            
+            let operationResult: Any = floor(result) == result ? Int(result) : result
+            operationsToReduce.insert("\(operationResult)", at: firstIndexOfOperand-1)
+        }
+        
+        return operationsToReduce
     }
 }
 
 extension Notification {
     enum ErrorName: String {
         case expressionNotValid = "Entrez une expression correcte !"
-        case cannotAddOperator = "Un operateur est déja mis !"
+        case cannotAddOperator = "L'opérateur sélectionné ne peut pas être ajouté à l'expression !"
         case expressionTooSmall = "Démarrez un nouveau calcul !"
         case dividedByZero = "Une division par 0 ne peut pas être effectuée !"
         
