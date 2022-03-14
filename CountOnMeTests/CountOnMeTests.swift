@@ -73,7 +73,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenAddingMultiply_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.Name(rawValue: Notification.ErrorName.cannotAddOperator.rawValue), object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
         
@@ -101,7 +101,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenTryingToCalculate_ThenGetToSmallError() {
         // Prepare expectations
-        _ = expectation(forNotification: Notification.ErrorName.expressionTooSmall.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
         
