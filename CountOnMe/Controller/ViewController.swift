@@ -18,13 +18,26 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorCannotAddOperator), name:  Notification.ErrorName.cannotAddOperator.notificationName, object: nil)
+        // Add observers to notifcations
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(displayErrorCannotAddOperator),
+                                               name:  Notification.CalculatorError.cannotAddOperator.notificationName,
+                                               object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionNotValid), name: Notification.ErrorName.expressionNotValid.notificationName, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(displayErrorExpressionNotValid),
+                                               name: Notification.CalculatorError.expressionNotValid.notificationName,
+                                               object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionTooSmall), name: Notification.ErrorName.expressionTooSmall.notificationName, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(displayErrorExpressionTooSmall),
+                                               name: Notification.CalculatorError.expressionTooSmall.notificationName,
+                                               object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(displayErrorExpressionDividedByZero), name: Notification.ErrorName.dividedByZero.notificationName, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(displayErrorExpressionDividedByZero),
+                                               name: Notification.CalculatorError.dividedByZero.notificationName,
+                                               object: nil)
     }
     
     @objc func displayErrorCannotAddOperator() {
@@ -45,31 +58,33 @@ class ViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
-        guard let numberText = sender.title(for: .normal) else {
+        guard let numberText = sender.title(for: .normal),
+              let number = Int(numberText)
+        else {
             return
         }
         
-        calculator.addNumber(numberText)
+        calculator.addNumber(number)
         displayExpression()
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        calculator.addOperator(.plus)
+        calculator.addOperand(.addition)
         displayExpression()
     }
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        calculator.addOperator(.minus)
+        calculator.addOperand(.substraction)
         displayExpression()
     }
 
     @IBAction func tappedMultiplyButton(_ sender: UIButton) {
-        calculator.addOperator(.multiply)
+        calculator.addOperand(.multiplication)
         displayExpression()
     }
     
     @IBAction func tappedDividedButton(_ sender: UIButton) {
-        calculator.addOperator(.division)
+        calculator.addOperand(.division)
         displayExpression()
     }
     
@@ -94,7 +109,7 @@ class ViewController: UIViewController {
     }
     
     /// Show an alert view controller with a specific error
-    private func displayError(_ error: Notification.ErrorName) {
+    private func displayError(_ error: Notification.CalculatorError) {
         let alertVC = UIAlertController(title: "Zéro!", message: error.notificationMessage, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         return present(alertVC, animated: true, completion: nil)

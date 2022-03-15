@@ -21,8 +21,8 @@ class CountOnMeTests: XCTestCase {
     // MARK: Any time
     func testGivenAnyExpression_WhenClearExpression_ThenExpressionShouldBeEmpty() {
         // Given
-        calculator.addNumber("12")
-        calculator.addOperator(.multiply)
+        calculator.addNumber(12)
+        calculator.addOperand(.multiplication)
         
         // When
         calculator.clearExpression()
@@ -45,7 +45,7 @@ class CountOnMeTests: XCTestCase {
         // Given
         
         // When
-        calculator.addNumber("1")
+        calculator.addNumber(1)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "1")
@@ -55,7 +55,7 @@ class CountOnMeTests: XCTestCase {
         // Given
         
         // When
-        calculator.addOperator(.plus)
+        calculator.addOperand(.addition)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "")
@@ -65,20 +65,20 @@ class CountOnMeTests: XCTestCase {
         // Given
         
         // When
-        calculator.addOperator(.minus)
+        calculator.addOperand(.substraction)
         
         // Then
-        XCTAssertEqual(calculator.getExpression, Operation.minus.rawValue)
+        XCTAssertEqual(calculator.getExpression, Operand.substraction.rawValue)
     }
     
     func testGivenExpressionIsEmpty_WhenAddingMultiply_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
         
         // When
-        calculator.addOperator(.multiply)
+        calculator.addOperand(.multiplication)
         
         // Then
         waitForExpectations(timeout: 1, handler: nil)
@@ -87,12 +87,12 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenAddingDivision_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
         
         // When
-        calculator.addOperator(.division)
+        calculator.addOperand(.division)
         
         // Then
         waitForExpectations(timeout: 1, handler: nil)
@@ -101,7 +101,7 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionIsEmpty_WhenTryingToCalculate_ThenGetToSmallError() {
         // Prepare expectations
-        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
         
@@ -126,14 +126,13 @@ class CountOnMeTests: XCTestCase {
                         -> Simple division -> Get result ✅
                         -> Division by 0 -> Get error notification ✅
                         -> Complex expression -> Get result according the calculation rules ✅
-                 
      */
     func testGivenExpressionEndWithNumber_WhenAddingNumber_ThenNumberShouldBeAddedToPreviousNumbers() {
         // Given
-        calculator.addNumber("2")
+        calculator.addNumber(2)
         
         // When
-        calculator.addNumber("5")
+        calculator.addNumber(5)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "25")
@@ -141,21 +140,21 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithNumber_WhenAddingOperator_ThenOperatorShouldBeAddedToExpression() {
         // Given
-        calculator.addNumber("3")
+        calculator.addNumber(3)
         
         // When
-        calculator.addOperator(.minus)
+        calculator.addOperand(.substraction)
         
         // Then
-        XCTAssertEqual(calculator.getExpression, "3" + Operation.minus.rawValue)
+        XCTAssertEqual(calculator.getExpression, "3" + Operand.substraction.rawValue)
     }
     
     func testGivenExpressionEndWithNumberAndHasLessThanThreeParts_WhenCalculate_ThenGetTooSmallError() {
         // Prepare expectations
-        _ = expectation(forNotification: Notification.ErrorName.expressionTooSmall.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.expressionTooSmall.notificationName, object: calculator, handler: nil)
         
         // Given
-        calculator.addNumber("4")
+        calculator.addNumber(4)
         
         // When
         calculator.calculateExpression()
@@ -167,9 +166,9 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenAnAddingExpression_WhenCalculate_ThenGetResult() {
         // Given
-        calculator.addNumber("5")
-        calculator.addOperator(.plus)
-        calculator.addNumber("10")
+        calculator.addNumber(5)
+        calculator.addOperand(.addition)
+        calculator.addNumber(10)
         
         // When
         calculator.calculateExpression()
@@ -180,9 +179,9 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenASubstractionExpression_WhenCalculate_ThenGetResult() {
         // Given
-        calculator.addNumber("5")
-        calculator.addOperator(.minus)
-        calculator.addNumber("10")
+        calculator.addNumber(5)
+        calculator.addOperand(.substraction)
+        calculator.addNumber(10)
         
         // When
         calculator.calculateExpression()
@@ -193,9 +192,9 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenAMulitplicationExpression_WhenCalculate_ThenGetResult() {
         // Given
-        calculator.addNumber("5")
-        calculator.addOperator(.multiply)
-        calculator.addNumber("10")
+        calculator.addNumber(5)
+        calculator.addOperand(.multiplication)
+        calculator.addNumber(10)
         
         // When
         calculator.calculateExpression()
@@ -206,9 +205,9 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenADivision_WhenCalculate_ThenGetResult() {
         // Given
-        calculator.addNumber("5")
-        calculator.addOperator(.division)
-        calculator.addNumber("10")
+        calculator.addNumber(5)
+        calculator.addOperand(.division)
+        calculator.addNumber(10)
         
         // When
         calculator.calculateExpression()
@@ -219,12 +218,12 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenADivisionByZero_WhenCalculare_ThenGetResult() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.dividedByZero.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.dividedByZero.notificationName, object: calculator, handler: nil)
         
         // Given
-        calculator.addNumber("5")
-        calculator.addOperator(.division)
-        calculator.addNumber("0")
+        calculator.addNumber(5)
+        calculator.addOperand(.division)
+        calculator.addNumber(0)
         
         // When
         calculator.calculateExpression()
@@ -236,26 +235,26 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenComplexeExpression_WhenCalculate_ThenGetResultAccordingToCalculationRules() {
         // Given
-        calculator.addOperator(.minus)
-        calculator.addNumber("8952")
-        calculator.addOperator(.minus)
-        calculator.addNumber("852")
-        calculator.addOperator(.multiply)
-        calculator.addNumber("8")
-        calculator.addOperator(.plus)
-        calculator.addNumber("7")
-        calculator.addOperator(.division)
-        calculator.addNumber("9")
-        calculator.addOperator(.minus)
-        calculator.addNumber("8")
-        calculator.addOperator(.multiply)
-        calculator.addNumber("36")
-        calculator.addOperator(.division)
-        calculator.addNumber("84")
-        calculator.addOperator(.minus)
-        calculator.addNumber("52")
-        calculator.addOperator(.plus)
-        calculator.addNumber("85")
+        calculator.addOperand(.substraction)
+        calculator.addNumber(8952)
+        calculator.addOperand(.substraction)
+        calculator.addNumber(852)
+        calculator.addOperand(.multiplication)
+        calculator.addNumber(8)
+        calculator.addOperand(.addition)
+        calculator.addNumber(7)
+        calculator.addOperand(.division)
+        calculator.addNumber(9)
+        calculator.addOperand(.substraction)
+        calculator.addNumber(8)
+        calculator.addOperand(.multiplication)
+        calculator.addNumber(36)
+        calculator.addOperand(.division)
+        calculator.addNumber(84)
+        calculator.addOperand(.substraction)
+        calculator.addNumber(52)
+        calculator.addOperand(.addition)
+        calculator.addNumber(85)
         
         // When
         calculator.calculateExpression()
@@ -272,11 +271,11 @@ class CountOnMeTests: XCTestCase {
      */
     func testGivenExpressionEndWithOperator_WhenAddingNumber_ThenNumberShouldBeAddedToOperation() {
         // Given
-        calculator.addNumber("2")
-        calculator.addOperator(.minus)
+        calculator.addNumber(2)
+        calculator.addOperand(.substraction)
         
         // When
-        calculator.addNumber("4")
+        calculator.addNumber(4)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "2 - 4")
@@ -284,13 +283,13 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithOperator_WhenAddingOperator_ThenGetCannotAddOperatorError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.cannotAddOperator.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.cannotAddOperator.notificationName, object: calculator, handler: nil)
         
         // Given
-        calculator.addOperator(.minus)
+        calculator.addOperand(.substraction)
         
         // When
-        calculator.addOperator(.division)
+        calculator.addOperand(.division)
         
         // Then
         waitForExpectations(timeout: 1, handler: nil)
@@ -299,13 +298,13 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionEndWithOperator_WhenCalculate_ThenGetExpressionNotValidError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
-        calculator.addNumber("3")
-        calculator.addOperator(.division)
-        calculator.addNumber("2")
-        calculator.addOperator(.minus)
+        calculator.addNumber(3)
+        calculator.addOperand(.division)
+        calculator.addNumber(2)
+        calculator.addOperand(.substraction)
         
         // When
         calculator.calculateExpression()
@@ -323,13 +322,13 @@ class CountOnMeTests: XCTestCase {
      */
     func testGivenExpressionHasResult_WhenAddingNumber_ThenNumberShouldBeAddedToNewExpression() {
         // Given
-        calculator.addNumber("3")
-        calculator.addOperator(.division)
-        calculator.addNumber("2")
+        calculator.addNumber(3)
+        calculator.addOperand(.division)
+        calculator.addNumber(2)
         calculator.calculateExpression()
         
         // When
-        calculator.addNumber("10")
+        calculator.addNumber(10)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "10")
@@ -337,13 +336,13 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionHasResult_WhenAddingOperator_ThenGetNewExpression() {
         // Given
-        calculator.addNumber("3")
-        calculator.addOperator(.multiply)
-        calculator.addNumber("2")
+        calculator.addNumber(3)
+        calculator.addOperand(.multiplication)
+        calculator.addNumber(2)
         calculator.calculateExpression()
         
         // When
-        calculator.addOperator(.plus)
+        calculator.addOperand(.addition)
         
         // Then
         XCTAssertEqual(calculator.getExpression, "")
@@ -351,12 +350,12 @@ class CountOnMeTests: XCTestCase {
     
     func testGivenExpressionHasResult_WhenRecalculate_ThenGetExpressionIsNotValidError() {
         // Prepare expectation
-        _ = expectation(forNotification: Notification.ErrorName.expressionNotValid.notificationName, object: calculator, handler: nil)
+        _ = expectation(forNotification: Notification.CalculatorError.expressionNotValid.notificationName, object: calculator, handler: nil)
         
         // Given
-        calculator.addNumber("3")
-        calculator.addOperator(.minus)
-        calculator.addNumber("2")
+        calculator.addNumber(3)
+        calculator.addOperand(.substraction)
+        calculator.addNumber(2)
         calculator.calculateExpression()
         
         // When

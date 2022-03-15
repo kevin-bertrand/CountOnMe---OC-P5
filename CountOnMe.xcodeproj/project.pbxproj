@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0636593927DF4842002B2D69 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0636593827DF4842002B2D69 /* Operation.swift */; };
+		0636593927DF4842002B2D69 /* Operand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0636593827DF4842002B2D69 /* Operand.swift */; };
 		0636594127DF4EA3002B2D69 /* CountOnMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0636594027DF4EA3002B2D69 /* CountOnMeTests.swift */; };
+		0636594827E09AB6002B2D69 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0636594727E09AB6002B2D69 /* Notification.swift */; };
 		06A559AA27D7C6A900FC95B6 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A559A927D7C6A900FC95B6 /* Calculator.swift */; };
 		1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BD2224E569900F565CB /* AppDelegate.swift */; };
 		1FA43BD5224E569900F565CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BD4224E569900F565CB /* ViewController.swift */; };
@@ -28,9 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0636593827DF4842002B2D69 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		0636593827DF4842002B2D69 /* Operand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operand.swift; sourceTree = "<group>"; };
 		0636593E27DF4EA3002B2D69 /* CountOnMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountOnMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0636594027DF4EA3002B2D69 /* CountOnMeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountOnMeTests.swift; sourceTree = "<group>"; };
+		0636594727E09AB6002B2D69 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		06A559A927D7C6A900FC95B6 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		1FA43BCF224E569900F565CB /* CountOnMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountOnMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA43BD2224E569900F565CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,7 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				06A559A927D7C6A900FC95B6 /* Calculator.swift */,
-				0636593827DF4842002B2D69 /* Operation.swift */,
+				0636593827DF4842002B2D69 /* Operand.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				1FA43BD4224E569900F565CB /* ViewController.swift */,
+				0636594727E09AB6002B2D69 /* Notification.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -177,7 +180,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "Vincent Saluzzo";
 				TargetAttributes = {
 					0636593D27DF4EA3002B2D69 = {
@@ -242,7 +245,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FA43BD5224E569900F565CB /* ViewController.swift in Sources */,
-				0636593927DF4842002B2D69 /* Operation.swift in Sources */,
+				0636594827E09AB6002B2D69 /* Notification.swift in Sources */,
+				0636593927DF4842002B2D69 /* Operand.swift in Sources */,
 				1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */,
 				06A559AA27D7C6A900FC95B6 /* Calculator.swift in Sources */,
 			);
@@ -443,7 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MAUVS763K;
 				INFOPLIST_FILE = "$(SRCROOT)/CountOnMe/Supporting files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -462,7 +466,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MAUVS763K;
 				INFOPLIST_FILE = "$(SRCROOT)/CountOnMe/Supporting files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
