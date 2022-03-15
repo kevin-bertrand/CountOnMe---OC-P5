@@ -78,7 +78,7 @@ class ViewController: UIViewController {
         displayExpression()
     }
 
-    @IBAction func tappedMultiplyButton(_ sender: UIButton) {
+    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
         calculator.addOperand(.multiplication)
         displayExpression()
     }

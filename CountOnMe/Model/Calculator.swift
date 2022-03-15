@@ -52,7 +52,7 @@ class Calculator {
     /// Add an operand to the expression
     func addOperand(_ operand: Operand) {
         // If the expression has a result -> Clear the expression to start a new one
-        if expressionHaveResult {
+        if expressionHasResult {
             clearExpression()
         }
         
@@ -67,7 +67,7 @@ class Calculator {
     /// Add a number to the expression
     func addNumber(_ number: Int) {
         // If the expression has a result -> Clear the expression to start a new one
-        if expressionHaveResult {
+        if expressionHasResult {
             clearExpression()
         }
         
@@ -95,12 +95,12 @@ class Calculator {
     }
     
     // Check if the expression already has a result
-    private var expressionHaveResult: Bool {
+    private var expressionHasResult: Bool {
         return expression.firstIndex(of: "=") != nil
     }
     
     // Check if the expression has minimum 3 elements to perform the calculation
-    private var expressionHaveEnoughElement: Bool {
+    private var expressionHasEnoughElement: Bool {
         return elements.count >= 3
     }
     
@@ -126,13 +126,13 @@ class Calculator {
         }
         
         // Check if the expression has at least 3 parts (2 Numbers and 1 operand). If not -> Send an error
-        guard expressionHaveEnoughElement else {
+        guard expressionHasEnoughElement else {
             sendNotification(for: .expressionTooSmall)
             return false
         }
         
         // Check if the expression already has a result. If it is the case -> Send an error
-        guard expressionHaveResult == false else {
+        guard expressionHasResult == false else {
             sendNotification(for: .expressionNotValid)
             return false
         }
