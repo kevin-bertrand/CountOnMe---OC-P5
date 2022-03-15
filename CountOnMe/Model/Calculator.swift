@@ -40,10 +40,11 @@ class Calculator {
             operationsToReduce[0] = "\(-Double(operationsToReduce[0])!)"
         }
         
-        for operand in Operation.allCases {
-            guard let calculationResult = performCalculationForOperation(operand, in: operationsToReduce) else { return }
-            operationsToReduce = calculationResult
-        }
+        guard let calculationResult = performCalculationFor(operands: [.division, .multiply], in: operationsToReduce) else { return }
+        operationsToReduce = calculationResult
+        
+        guard let calculationResult = performCalculationFor(operands: [.minus, .plus], in: operationsToReduce) else { return }
+        operationsToReduce = calculationResult
         
         guard let calculatedResult = operationsToReduce.first,
               let result = Double(calculatedResult) else {
@@ -106,30 +107,35 @@ class Calculator {
         NotificationCenter.default.post(notification)
     }
     
-    private func performCalculationForOperation(_ operand: Operation, in expressionToCalculate: [String]) -> [String]? {
-        let operandCharacter = operand.rawValue.trimmingCharacters(in: .whitespaces)
+    private func performCalculationFor(operands: [Operation], in expressionToCalculate: [String]) -> [String]? {
+        let operandCharacters = operands.map { $0.rawValue.trimmingCharacters(in: .whitespaces) }
         var operationsToReduce = expressionToCalculate
         
-        while operationsToReduce.contains(operandCharacter) {
-            let firstIndexOfOperand = operationsToReduce.firstIndex(of: operandCharacter)!
+        guard operandCharacters.count == 2, operands[0] != operands[1] else { return nil }
+        
+        while operationsToReduce.contains(operandCharacters[0]) || operationsToReduce.contains(operandCharacters[1]) {
+            let firstIndexOfOperand = min(operationsToReduce.firstIndex(of: operandCharacters[0]) ?? Array<Double>.Index(Int.max), operationsToReduce.firstIndex(of: operandCharacters[1]) ?? Array<Double>.Index(Int.max))
             let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1])!
             let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1])!
             
             let result: Double
-            switch operand {
-            case .plus:
+            switch operationsToReduce[firstIndexOfOperand] {
+            case "+":
                 result = leftNumber + rightNumber
-            case .minus:
+            case "-":
                 result = leftNumber - rightNumber
-            case .multiply:
+            case "*":
                 result = leftNumber * rightNumber
-            case .division:
+            case "/":
                 if rightNumber == 0 {
                     sendNotification(for: .dividedByZero)
                     return nil
                 } else {
                     result = leftNumber / rightNumber
                 }
+            default:
+                sendNotification(for: .expressionNotValid)
+                return nil
             }
             
             for indexToRemove in (firstIndexOfOperand-1...firstIndexOfOperand+1).reversed() {
