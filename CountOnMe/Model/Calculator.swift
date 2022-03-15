@@ -44,8 +44,14 @@ class Calculator {
             guard let calculationResult = performCalculationForOperation(operand, in: operationsToReduce) else { return }
             operationsToReduce = calculationResult
         }
-
-        expression.append(" = \(operationsToReduce.first!)")
+        
+        guard let calculatedResult = operationsToReduce.first,
+              let result = Double(calculatedResult) else {
+            sendNotification(for: .expressionNotValid)
+            return
+        }
+        
+        expression.append(" = \(floor(result) == result ? Int(result) as Any : (round(result*1000)/1000.0))")
     }
     
     func addOperator(_ operation: Operation) {
