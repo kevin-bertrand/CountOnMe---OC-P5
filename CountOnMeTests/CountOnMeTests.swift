@@ -33,13 +33,13 @@ class CountOnMeTests: XCTestCase {
     
     // MARK: When the expression is Empty
     /*
-     -> Check when adding a number -> Get the number ✅
+     -> Check when adding a number -> Get the number 
      -> Check when adding an operator:
-                -> Adding + -> Expression is still empty ✅
-                -> Adding - -> Get the " - " ✅
-                -> Adding * -> Get error notification ✅
-                -> Adding / -> Get error notification ✅
-     -> Check when trying to calculate -> Get error notification ✅
+                -> Adding + -> Expression is still empty
+                -> Adding - -> Get the " - "
+                -> Adding * -> Get error notification
+                -> Adding / -> Get error notification
+     -> Check when trying to calculate -> Get error notification
      */
     func testGivenExpressionIsEmpty_WhenAddingNumber_ThenExpressionShouldBeTheNumber() {
         // Given
@@ -115,17 +115,17 @@ class CountOnMeTests: XCTestCase {
     
     // MARK: When the expression end with a number
     /*
-     -> Check when adding a number -> Get the number added to the expression ✅
-     -> Check when adding an operator -> Get the operator to the expression ✅
+     -> Check when adding a number -> Get the number added to the expression
+     -> Check when adding an operator -> Get the operator to the expression
      -> Check when trying to calculate:
-                -> When the expression has less than 2 numbers -> Get error notification ✅
+                -> When the expression has less than 2 numbers -> Get error notification
                 -> When the expression has at least 2 numbers
-                        -> Simple plus -> Get result ✅
-                        -> Simple minus -> Get result ✅
-                        -> Simple multiplication -> Get result ✅
-                        -> Simple division -> Get result ✅
-                        -> Division by 0 -> Get error notification ✅
-                        -> Complex expression -> Get result according the calculation rules ✅
+                        -> Simple plus -> Get result
+                        -> Simple minus -> Get result
+                        -> Simple multiplication -> Get result
+                        -> Simple division -> Get result
+                        -> Division by 0 -> Get error notification
+                        -> Complex expression -> Get result according the calculation rules
      */
     func testGivenExpressionEndWithNumber_WhenAddingNumber_ThenNumberShouldBeAddedToPreviousNumbers() {
         // Given
@@ -236,7 +236,7 @@ class CountOnMeTests: XCTestCase {
     func testGivenComplexeExpression_WhenCalculate_ThenGetResultAccordingToCalculationRules() {
         // Given
         calculator.addOperand(.substraction)
-        calculator.addNumber(8952)
+        calculator.addNumber(-8952)
         calculator.addOperand(.substraction)
         calculator.addNumber(852)
         calculator.addOperand(.multiplication)
@@ -260,14 +260,14 @@ class CountOnMeTests: XCTestCase {
         calculator.calculateExpression()
         
         // Then
-        XCTAssertEqual(calculator.getExpression, " - 8952 - 852 * 8 + 7 / 9 - 8 * 36 / 84 - 52 + 85 = -15737.651")
+        XCTAssertEqual(calculator.getExpression, " - -8952 - 852 * 8 + 7 / 9 - 8 * 36 / 84 - 52 + 85 = 2166.349")
     }
     
     // MARK: When the expression end with an operator
     /*
-     -> Check when adding a number -> Get the number added to the expression ✅
-     -> Check when adding an operator -> Get error notification ✅
-     -> Check when trying to calculate -> Get error notification ✅
+     -> Check when adding a number -> Get the number added to the expression
+     -> Check when adding an operator -> Get error notification
+     -> Check when trying to calculate -> Get error notification
      */
     func testGivenExpressionEndWithOperator_WhenAddingNumber_ThenNumberShouldBeAddedToOperation() {
         // Given
@@ -316,9 +316,9 @@ class CountOnMeTests: XCTestCase {
     
     // MARK: When the expression has a result
     /*
-     -> Check when adding a number -> New expression ✅
-     -> Check when adding an operator -> New expression ✅
-     -> Check when trying to recalculate -> Get error notification ✅
+     -> Check when adding a number -> New expression
+     -> Check when adding an operator -> New expression
+     -> Check when trying to recalculate -> Get error notification
      */
     func testGivenExpressionHasResult_WhenAddingNumber_ThenNumberShouldBeAddedToNewExpression() {
         // Given
