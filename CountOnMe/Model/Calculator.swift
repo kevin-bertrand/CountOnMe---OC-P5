@@ -158,12 +158,9 @@ class Calculator {
             let firstIndexOfOperand = min(firstIndexOfFirstOperand ?? defaultInfiniteIndex, firstIndexOfSecondOperand ?? defaultInfiniteIndex)
             
             // Check both number are double and get operand
-            guard let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1]),
-                  let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1]),
-                  let operand = Operand(rawValue: " \(operationsToReduce[firstIndexOfOperand]) ") else {
-                sendNotification(for: .expressionNotValid)
-                return nil
-            }
+            let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1])!
+            let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1])!
+            let operand = Operand(rawValue: " \(operationsToReduce[firstIndexOfOperand]) ")!
             
             // Get the result of the operation
             guard let result = operand.calculate(leftNumber, rightNumber) else {
