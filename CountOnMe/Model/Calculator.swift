@@ -158,23 +158,23 @@ class Calculator {
             let firstIndexOfOperand = min(firstIndexOfFirstOperand ?? defaultInfiniteIndex, firstIndexOfSecondOperand ?? defaultInfiniteIndex)
             
             // Check both number are double and get operand
-            let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1])!
-            let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1])!
-            let operand = Operand(rawValue: " \(operationsToReduce[firstIndexOfOperand]) ")!
-            
-            // Get the result of the operation
-            guard let result = operand.calculate(leftNumber, rightNumber) else {
-                sendNotification(for: .dividedByZero)
-                return nil
+            if let leftNumber = Double(operationsToReduce[firstIndexOfOperand-1]),
+               let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1]),
+               let operand = Operand(rawValue: " \(operationsToReduce[firstIndexOfOperand]) ") {
+                // Get the result of the operation
+                guard let result = operand.calculate(leftNumber, rightNumber) else {
+                    sendNotification(for: .dividedByZero)
+                    return nil
+                }
+                
+                // Remove both number and operand that have just been calculated
+                for indexToRemove in (firstIndexOfOperand-1...firstIndexOfOperand+1).reversed() {
+                    operationsToReduce.remove(at: indexToRemove)
+                }
+                
+                // Add the result at the place of the first number that have just been calculated
+                operationsToReduce.insert("\(result)", at: firstIndexOfOperand-1)
             }
-            
-            // Remove both number and operand that have just been calculated
-            for indexToRemove in (firstIndexOfOperand-1...firstIndexOfOperand+1).reversed() {
-                operationsToReduce.remove(at: indexToRemove)
-            }
-            
-            // Add the result at the place of the first number that have just been calculated
-            operationsToReduce.insert("\(result)", at: firstIndexOfOperand-1)
         }
         
         return operationsToReduce
