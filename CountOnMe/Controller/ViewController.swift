@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // Add observers to notifcations
+        // TODO: Check with delegate
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(displayErrorCannotAddOperator),
                                                name:  Notification.CalculatorError.cannotAddOperator.notificationName,
@@ -40,6 +41,8 @@ class ViewController: UIViewController {
                                                object: nil)
     }
     
+    
+    //TODO: Check if I cannot do 1 fct
     @objc func displayErrorCannotAddOperator() {
         self.displayError(.cannotAddOperator)
     }
@@ -68,6 +71,7 @@ class ViewController: UIViewController {
         displayExpression()
     }
     
+    // TODO: Check with TAG 
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         calculator.addOperand(.addition)
         displayExpression()

@@ -162,7 +162,7 @@ class Calculator {
                let rightNumber = Double(operationsToReduce[firstIndexOfOperand+1]),
                let operand = Operand(rawValue: " \(operationsToReduce[firstIndexOfOperand]) ") {
                 // Get the result of the operation
-                guard let result = operand.calculate(leftNumber, rightNumber) else {
+                guard let result = calculate(with: operand, firstNumber: leftNumber, secondNumber: rightNumber) else {
                     sendNotification(for: .dividedByZero)
                     return nil
                 }
@@ -178,5 +178,25 @@ class Calculator {
         }
         
         return operationsToReduce
+    }
+    
+    /// Always return the result of the expression of 2 numbers except when it is a division by 0 when it returns nil
+    private func calculate(with operand: Operand, firstNumber: Double, secondNumber: Double) -> Double? {
+        var result: Double? = nil
+        
+        switch operand {
+        case .multiplication:
+            result = firstNumber * secondNumber
+        case .division:
+            if secondNumber != 0 {
+                result = firstNumber / secondNumber
+            }
+        case .addition:
+            result = firstNumber + secondNumber
+        case .substraction:
+            result = firstNumber - secondNumber
+        }
+        
+        return result
     }
 }
