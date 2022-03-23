@@ -113,7 +113,7 @@ class Calculator {
     /// Configure and send a notification to the controller
     private func sendNotification(for errorName: Notification.CalculatorError) {
         let notificationName = errorName.notificationName
-        let notification = Notification(name: notificationName, object: self)
+        let notification = Notification(name: notificationName, object: self, userInfo: ["name": errorName.notificationName])
         NotificationCenter.default.post(notification)
     }
     

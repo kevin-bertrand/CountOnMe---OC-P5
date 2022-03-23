@@ -9,7 +9,7 @@
 import Foundation
 
 extension Notification {
-    enum CalculatorError: String {
+    enum CalculatorError: String, CaseIterable {
         case expressionNotValid = "Entrez une expression correcte !"
         case cannotAddOperator = "L'opérateur sélectionné ne peut pas être ajouté à l'expression !"
         case expressionTooSmall = "Démarrez un nouveau calcul !"

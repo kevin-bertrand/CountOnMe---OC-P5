@@ -19,46 +19,32 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // Add observers to notifcations
-        // TODO: Check with delegate
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(displayErrorCannotAddOperator),
-                                               name:  Notification.CalculatorError.cannotAddOperator.notificationName,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(displayErrorExpressionNotValid),
-                                               name: Notification.CalculatorError.expressionNotValid.notificationName,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(displayErrorExpressionTooSmall),
-                                               name: Notification.CalculatorError.expressionTooSmall.notificationName,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(displayErrorExpressionDividedByZero),
-                                               name: Notification.CalculatorError.dividedByZero.notificationName,
-                                               object: nil)
+        for calculatorError in Notification.CalculatorError.allCases {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(gettingErrorNotification),
+                                                   name: calculatorError.notificationName,
+                                                   object: nil)
+        }
     }
     
-    
-    //TODO: Check if I cannot do 1 fct
-    @objc func displayErrorCannotAddOperator() {
-        self.displayError(.cannotAddOperator)
+    /// Get the notification error and check which one is it to trigger the alert view controller with the correct message
+    @objc func gettingErrorNotification(_ notification: Notification) {
+        if let notificationName = notification.userInfo?["name"] as? Notification.Name {
+            switch notificationName {
+            case Notification.CalculatorError.dividedByZero.notificationName:
+                self.displayError(.dividedByZero)
+            case Notification.CalculatorError.expressionNotValid.notificationName:
+                self.displayError(.expressionNotValid)
+            case Notification.CalculatorError.expressionTooSmall.notificationName:
+                self.displayError(.expressionTooSmall)
+            case Notification.CalculatorError.cannotAddOperator.notificationName:
+                self.displayError(.cannotAddOperator)
+            default:
+                return
+            }
+        }
     }
-    
-    @objc func displayErrorExpressionNotValid() {
-        return self.displayError(.expressionNotValid)
-    }
-    
-    @objc func displayErrorExpressionTooSmall() {
-        return self.displayError(.expressionTooSmall)
-    }
-    
-    @objc func displayErrorExpressionDividedByZero() {
-        return self.displayError(.dividedByZero)
-    }
-    
+
     // MARK: Actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal),
@@ -71,7 +57,6 @@ class ViewController: UIViewController {
         displayExpression()
     }
     
-    // TODO: Check with TAG 
     @IBAction func tappedOperandButton(_ sender: UIButton) {
         switch sender.tag {
         case 0:
