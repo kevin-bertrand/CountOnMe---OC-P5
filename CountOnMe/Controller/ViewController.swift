@@ -72,23 +72,19 @@ class ViewController: UIViewController {
     }
     
     // TODO: Check with TAG 
-    @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        calculator.addOperand(.addition)
-        displayExpression()
-    }
-    
-    @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        calculator.addOperand(.substraction)
-        displayExpression()
-    }
-
-    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        calculator.addOperand(.multiplication)
-        displayExpression()
-    }
-    
-    @IBAction func tappedDividedButton(_ sender: UIButton) {
-        calculator.addOperand(.division)
+    @IBAction func tappedOperandButton(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            calculator.addOperand(.addition)
+        case 1:
+            calculator.addOperand(.substraction)
+        case 2:
+            calculator.addOperand(.multiplication)
+        case 3:
+            calculator.addOperand(.division)
+        default:
+            return
+        }
         displayExpression()
     }
     
