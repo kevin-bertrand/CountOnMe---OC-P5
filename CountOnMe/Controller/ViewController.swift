@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     // MARK: Public
     // MARK: Outlets
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet var numberButtons: [UIButton]!
 
     // MARK: Methods
     override func viewDidLoad() {

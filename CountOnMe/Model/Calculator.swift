@@ -19,7 +19,7 @@ class Calculator {
     /// Calculate the result of the expression
     func calculateExpression() {
         // Check if there is an error in the expression to perform the calculation
-        guard checkCalculateErrors() else { return }
+        guard checkExpressionErrors() else { return }
         
         // Create local copy of operations
         var operationsToReduce = elements
@@ -118,7 +118,7 @@ class Calculator {
     }
     
     /// Check if the expression ends with a number, if it has at least 3 parts and if it doesn't have already a result
-    private func checkCalculateErrors() -> Bool{
+    private func checkExpressionErrors() -> Bool{
         // Check if the epxression end with a number. If not -> Send an error
         guard lastElementsIsANumber else {
             sendNotification(for: .expressionNotValid)
